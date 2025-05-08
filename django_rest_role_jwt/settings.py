@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,7 +40,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'api.apps.ApiConfig'
+    'api.apps.ApiConfig',
+    # Nuevas apps
+    'documents',
+    'presentations',
+    'ia',
+    # 'collaboration',
+    # 'subscriptions',
+    # Bibliotecas adicionales
+    'django_filters',
+    'rest_framework_nested',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -87,9 +97,9 @@ CORS_ALLOW_CREDENTIALS = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'generador_presentaciones',
+        'NAME': 'db_gen2',
         'USER': 'postgres',
-        'PASSWORD': '8960406',
+        'PASSWORD': '1905',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -102,6 +112,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
 }
 
 
@@ -155,3 +172,12 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
 
+# Configuración para archivos media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Tamaño máximo de subida de archivos (10MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
+
+# Configuración para integración con servicios de IA
+# OPENAI_API_KEY = 'tu-clave-api'
